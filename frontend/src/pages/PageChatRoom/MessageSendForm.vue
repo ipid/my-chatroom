@@ -25,9 +25,7 @@ function sendMessage() {
     return
   }
 
-  emit('sendMessage', {
-    content: inputMessage.value,
-  })
+  emit('sendMessage', inputMessage.value)
   inputMessage.value = ''
 }
 </script>

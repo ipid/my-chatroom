@@ -5,13 +5,13 @@
 <style lang="scss">
 @font-face {
   font-family: 'iconfont';
-  src: url('assets/iconfont.woff2') format('woff2'),
-  url('assets/iconfont.woff') format('woff'),
-  url('assets/iconfont.ttf') format('truetype');
+  src: url('./assets/iconfont/iconfont.woff2') format('woff2'),
+  url('./assets/iconfont/iconfont.ttf') format('truetype');
 }
 
 .iconfont {
-  font-family: "iconfont", sans-serif !important;
+  font-family: 'iconfont' !important;
+  font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

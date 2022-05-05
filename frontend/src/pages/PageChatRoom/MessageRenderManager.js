@@ -2,9 +2,8 @@ import {reactive} from 'vue'
 import {ElMessage} from 'element-plus'
 import {
   REQ_TYPE_MESSAGE,
-  RESP_TYPE_DICE,
   RESP_TYPE_MESSAGE_ACKNOWLEDGE,
-  RESP_TYPE_NEW_RICH_MESSAGE,
+  RESP_TYPE_NEW_MESSAGE,
 } from '../../constants/def'
 import WsMessageServiceClient from './WsMessageServiceClient'
 
@@ -105,7 +104,7 @@ export class MessageRenderManager {
   }
 
   handleMessage(msg) {
-    if (msg.type === RESP_TYPE_NEW_RICH_MESSAGE || msg.type === RESP_TYPE_DICE) {
+    if (msg.type === RESP_TYPE_NEW_MESSAGE) {
       msg.data.isSender = false
       msg.data.acknowledged = true
       this.#insertMessage(msg)
@@ -114,6 +113,9 @@ export class MessageRenderManager {
       }
 
     } else if (msg.type === RESP_TYPE_MESSAGE_ACKNOWLEDGE) {
+      msg.data.isSender = true
+      msg.data.acknowledged = true
+
       if (this.#ackQueue.length <= 0) {
         throw new Error('#ackQueue 怎么可能为空？你这服务器玩阴的是吧，他奶奶的，直接来吧')
       }
@@ -131,7 +133,9 @@ export class MessageRenderManager {
         throw new Error(`不可能，找不到 id 为 ${fakeMsgId} 的 fakeMsg，一定是哪里出问题了`)
       }
       this.#messages.splice(fakeMsgIndex, 1)
-      this.#insertMessage(msg.data.newMsg)
+
+      msg.type = RESP_TYPE_NEW_MESSAGE
+      this.#insertMessage(msg)
 
     } else {
       throw new Error(`未知的消息类型: ${msg.type}`)
@@ -159,14 +163,16 @@ export class MessageRenderManager {
 
     this.#sendMsgCount++
     const fakeMsg = {
-      type: RESP_TYPE_NEW_RICH_MESSAGE,
+      type: RESP_TYPE_NEW_MESSAGE,
       data: {
         id: -this.#sendMsgCount,
-        content: richTextContent,
         timestampMs: Date.now(),
         sender: this.#nickname.value,
         isSender: true,
         acknowledged: false,
+        richText: {
+          content: richTextContent,
+        },
       },
     }
     this.#messages.push(fakeMsg)

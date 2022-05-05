@@ -2,7 +2,6 @@ package main
 
 import (
 	"sync"
-	"time"
 )
 
 // 线程安全的消息广播、存储工具类。
@@ -11,17 +10,20 @@ type messageHub struct {
 	msgRec     *MessageRecorder
 
 	subscriberLock sync.RWMutex
-	subscribers    map[chan *Message]struct{}
+	lastUnusedId   int64
+	subscribers    map[int64]chan *ServerResponse
 }
 
 func NewMessageHub() *messageHub {
-	return &messageHub{
+	h := &messageHub{
 		msgRecLock: sync.Mutex{},
 		msgRec:     NewMessageRecorder(MAX_MESSAGE_HISTORY),
 
 		subscriberLock: sync.RWMutex{},
-		subscribers:    make(map[chan *Message]struct{}),
+		lastUnusedId:   0,
+		subscribers:    make(map[int64]chan *ServerResponse),
 	}
+	return h
 }
 
 func (h *messageHub) GetHistoryMessages(num int) []*Message {
@@ -31,14 +33,7 @@ func (h *messageHub) GetHistoryMessages(num int) []*Message {
 	return h.msgRec.GetLast(num)
 }
 
-func (h *messageHub) SendClientMessage(clientMsg *ClientMessage, senderChan chan *Message) {
-	msg := &Message{
-		Id:          -1,
-		Sender:      clientMsg.Sender,
-		Content:     clientMsg.Content,
-		TimestampMs: uint64(time.Now().UnixMilli()),
-	}
-
+func (h *messageHub) SubmitAndBroadcastMessage(msg *Message) {
 	h.msgRecLock.Lock()
 	msg.Id = int64(h.msgRec.Put(msg))
 	h.msgRecLock.Unlock()
@@ -46,28 +41,37 @@ func (h *messageHub) SendClientMessage(clientMsg *ClientMessage, senderChan chan
 	h.subscriberLock.RLock()
 	defer h.subscriberLock.RUnlock()
 
-	for subscriber := range h.subscribers {
-		if subscriber == senderChan {
+	resp := &ServerResponse{
+		Type: RESP_TYPE_NEW_MESSAGE,
+		Data: msg,
+	}
+
+	for id, subscriber := range h.subscribers {
+		if id == msg.SenderId {
 			continue
 		}
 
-		subscriber <- msg
+		subscriber <- resp
 	}
 }
 
-func (h *messageHub) Subscribe() chan *Message {
+func (h *messageHub) Subscribe() (chanWriteToClient <-chan *ServerResponse, id int64) {
 	h.subscriberLock.Lock()
 	defer h.subscriberLock.Unlock()
 
-	c := make(chan *Message, MESSAGE_BUFFER)
-	h.subscribers[c] = struct{}{}
+	id = h.lastUnusedId
+	h.lastUnusedId++
 
-	return c
+	h.subscribers[id] = make(chan *ServerResponse)
+	return h.subscribers[id], id
 }
 
-func (h *messageHub) Unsubscribe(msgChan chan *Message) {
+func (h *messageHub) Unsubscribe(id int64) {
 	h.subscriberLock.Lock()
 	defer h.subscriberLock.Unlock()
 
-	delete(h.subscribers, msgChan)
+	if c, has := h.subscribers[id]; has {
+		close(c)
+		delete(h.subscribers, id)
+	}
 }

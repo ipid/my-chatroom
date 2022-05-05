@@ -23,7 +23,7 @@ const richMessageExample = {
   },
 }
 
-export const RESP_TYPE_NEW_RICH_MESSAGE = 'msg'
+export const RESP_TYPE_NEW_MESSAGE = 'msg'
 
 const diceMessageExample = {
   'type': 'dice',
@@ -36,8 +36,6 @@ const diceMessageExample = {
     'acknowledged': true,
   },
 }
-
-export const RESP_TYPE_DICE = 'dice'
 
 const msgAckExample = {
   'type': 'msg-ack',

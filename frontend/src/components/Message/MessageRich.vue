@@ -1,6 +1,6 @@
 <template>
   <div v-loading="!msg.data.acknowledged" :class="contentClasses">
-    {{ msg.data.content }}
+    {{ msg.data.richText.content }}
   </div>
 </template>
 

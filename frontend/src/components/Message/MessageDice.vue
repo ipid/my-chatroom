@@ -1,6 +1,6 @@
 <template>
   <div :class="contentClass">
-    <div v-for="(dice, i) in msg.data.dices" :key="i" class="message-dice__dice">
+    <div v-for="(dice, i) in msg.data.dice.dices" :key="i" class="message-dice__dice">
       {{ dice }}
     </div>
   </div>

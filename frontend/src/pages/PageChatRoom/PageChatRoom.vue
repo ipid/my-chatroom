@@ -63,6 +63,7 @@ onMounted(async () => {
 })
 
 msgManager.onRecvMessage.add(async () => {
+  await nextTick()
   msgContainer.value.scrollTop = 1e9
 })
 

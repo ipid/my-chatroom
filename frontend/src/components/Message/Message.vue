@@ -18,7 +18,7 @@ import {computed} from 'vue'
 import dayjs from 'dayjs'
 import MessageDice from './MessageDice.vue'
 import MessageRich from './MessageRich.vue'
-import {RESP_TYPE_DICE, RESP_TYPE_NEW_RICH_MESSAGE} from '../../constants/def'
+import {RESP_TYPE_NEW_MESSAGE} from '../../constants/def'
 
 const props = defineProps({
   msg: {
@@ -39,13 +39,14 @@ const outerStyle = computed(() => {
 })
 
 function MessageComponent() {
-  switch (props.msg?.type) {
-    case RESP_TYPE_DICE:
+  if (props.msg.type === RESP_TYPE_NEW_MESSAGE) {
+    if (props.msg.data?.dice) {
       return <MessageDice msg={props.msg}/>
-    case RESP_TYPE_NEW_RICH_MESSAGE:
+    } else if (props.msg.data?.richText) {
       return <MessageRich msg={props.msg}/>
-    default:
+    } else {
       throw new Error('<Message> 组件表示，我不认识这个消息类型: ' + props.msg?.type)
+    }
   }
 }
 </script>

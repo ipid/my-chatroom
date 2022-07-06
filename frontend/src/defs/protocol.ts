@@ -16,6 +16,14 @@ export interface SendRequest {
   }
 }
 
+// 客户端请求，表示客户端希望修改当前用户的显示名称
+export interface RenameRequest {
+  rename: {
+    // 新的显示名称
+    newName: string;
+  }
+}
+
 // 服务器端初始回应，用于将 token、当前用户、当前历史消息等告诉用户
 export interface InitialResponse {
   // 客户端当前的用户 id
@@ -40,8 +48,29 @@ export interface AckResponse {
   ack: Message;
 }
 
+// 改名操作失败的原因，该原因由服务器端产生
+export const enum RenameFailReason {
+  // 名字与他人重复，造成冲突
+  CONFLICT = 'conflict'
+}
+
+// 服务器端改名回应，用于将改名的结果告知客户端
+export interface RenameResponse {
+  // 一条消息，其内容与同一聊天室其他客户端收到的消息一致
+  rename: {
+    // 改名操作成功
+    success: true;
+  } | {
+    // 改名操作失败
+    success: false;
+
+    // 此字段表示失败原因
+    reason: RenameFailReason;
+  };
+}
+
 // 表示一条客户端请求，其类型不确定
-export type Request = SendRequest;
+export type Request = SendRequest | RenameRequest;
 
 // 表示一条服务器端的消息，其类型不确定
-export type Response = InitialResponse | MessageResponse | AckResponse;
+export type Response = InitialResponse | MessageResponse | AckResponse | RenameResponse;

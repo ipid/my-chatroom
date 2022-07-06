@@ -1,49 +1,24 @@
-# 操作系统产生的辣鸡文件
-.DS_Store
-Thumbs.db
-
-# Word、Excel、Chrome 的临时文件
-/**/~$*
-/**/*.crdownload
-
-# npm 模块
-node_modules
-
-# 仅本地可见的环境变量，不应该提交到 Git 上
-.env.local
-.env.*.local
-
-# 包管理器的日志文件
+# Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# 编辑器配置（全部忽略，不提供默认配置）
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
 .idea
-.vscode
-*.iws
-*.iml
-*.ipr
+.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-# 测试工具的报告、日志等
-selenium-debug.log
-tests/**/coverage/
-tests/e2e/reports
-
-# 编译文件存放处
-/build/
-/builds/
-/dist/
-/dists/
-/out/
-/outs/
-/tmp/
-/temp/

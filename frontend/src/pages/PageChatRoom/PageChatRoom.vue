@@ -12,7 +12,7 @@
         title="提示"
         :width="200"
         trigger="click"
-        content="可以在聊天框中发送形如 2d9、3d12 的内容，服务端会将消息内容转换为骰子。"
+        content="可以在聊天框中发送形如 2d9、3d12 的内容，服务端会将其转换为骰子。（最大范围：99d99）"
       >
         <template #reference>
           <div class="pcr__dice-icon iconfont">&#xe6b3;</div>
@@ -31,7 +31,7 @@
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {onMounted, ref, nextTick} from 'vue'
 import {Edit as EditIcon} from '@element-plus/icons-vue'
 import 'element-plus/es/components/message/style/css'
@@ -111,6 +111,11 @@ async function onSendMessage(content) {
   .pcr__send-toolbar {
     flex: 0 0 auto;
     padding: 5px 30px 0;
+
+    & * {
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     .pcr__dice-icon {
       color: darken($border-color, 15%);

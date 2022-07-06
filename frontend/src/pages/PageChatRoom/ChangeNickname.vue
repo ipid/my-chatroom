@@ -17,7 +17,7 @@
   </el-dialog>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {ref, watch} from 'vue'
 import {Check as CheckIcon} from '@element-plus/icons-vue'
 

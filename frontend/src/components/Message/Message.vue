@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script lang="jsx" setup>
+<script lang="tsx" setup>
 import {computed} from 'vue'
 import dayjs from 'dayjs'
 import MessageDice from './MessageDice.vue'

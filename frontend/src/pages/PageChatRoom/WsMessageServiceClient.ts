@@ -1,6 +1,8 @@
-import {REQ_TYPE_MESSAGE} from '../../constants/def'
-
-function getBackendWsUrl() {
+/**
+ * 获取后端 WebSocket URL。
+ * 由于本地不方便配置 TLS 证书，故在开发时会获取到 ws 协议 localhost:8012 的 URL，在生产时会获取到不带端口号的 wss 协议 URL。
+ */
+function getBackendWsUrl(): string {
   if (import.meta.env.DEV) {
     return `ws://${location.hostname}:8012/ws/chat`
   }
@@ -8,7 +10,12 @@ function getBackendWsUrl() {
   return `${(location.protocol === 'https:') ? 'wss' : 'ws'}://${location.host}/ws/chat`
 }
 
-function waitWebSocketOpen(ws) {
+/**
+ * 用于等待 WebSocket 对象切换到开启状态的函数。
+ * @param ws WebSocket 对象
+ * @return 一个无值的 Promise，当 WebSocket 切换到开启对象后会被 resolve。
+ */
+function waitWebSocketOpen(ws: WebSocket): Promise<void> {
   return new Promise((resolve, reject) => {
     if (ws.readyState === WebSocket.OPEN) {
       resolve()
@@ -32,8 +39,7 @@ function waitWebSocketOpen(ws) {
 export default class WsMessageServiceClient {
   #wsConn = null
 
-  onReceiveMessage = (msg) => {
-  }
+  onReceiveMessage: ()
   onConnected = () => {
   }
   onDisconnected = () => {

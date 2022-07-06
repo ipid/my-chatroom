@@ -4,6 +4,6 @@ import PageChatRoom from './pages/PageChatRoom'
 export default createRouter({
   history: createWebHashHistory(),
   routes: [
-    {path: '/', nickname: 'chat-room', component: PageChatRoom},
+    {path: '/', name: 'chat-room', component: PageChatRoom},
   ],
 })

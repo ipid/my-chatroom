@@ -1,8 +1,9 @@
 import { Message } from "./entity.js";
 
+// 连接后端 WebSocket 服务器时，在 URL 的 query string 处添加上的内容
 export interface WebSocketParam {
   // 上次登录用的用户 id
-  id: number;
+  userId: number;
 
   // 上次登录时服务器发放的 token
   token: string;
@@ -26,14 +27,16 @@ export interface RenameRequest {
 
 // 服务器端初始回应，用于将 token、当前用户、当前历史消息等告诉用户
 export interface InitialResponse {
-  // 客户端当前的用户 id
-  userId: number;
+  init: {
+    // 客户端当前的用户 id
+    userId: number;
 
-  // 第一次登录时，这里会存放登录用的 token；用 token 登录时此字段为空字符串
-  token: string;
+    // 第一次登录时，这里会存放登录用的 token；用 token 登录时此字段为空字符串
+    token: string;
 
-  // 服务器端的历史消息
-  history: Message[]
+    // 服务器端的历史消息
+    history: Message[]
+  }
 }
 
 // 服务器端消息回应，表示收到了一或多条消息

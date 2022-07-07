@@ -35,7 +35,7 @@
 import {onMounted, ref, nextTick} from 'vue'
 import {Edit as EditIcon} from '@element-plus/icons-vue'
 import 'element-plus/es/components/message/style/css'
-import Message from '../../components/Message'
+import Message from '../../components/Message/Message.vue'
 import MessageSendForm from './MessageSendForm.vue'
 import ChangeNickname from './ChangeNickname.vue'
 import {MessageRenderManager} from './MessageRenderManager'

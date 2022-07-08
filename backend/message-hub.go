@@ -1,13 +1,14 @@
 package main
 
 import (
+	"github.com/ipid/chatroom-backend/ringqueue"
 	"sync"
 )
 
 // 线程安全的消息广播、存储工具类。
 type messageHub struct {
 	msgRecLock sync.Mutex
-	msgRec     *MessageRecorder
+	msgRec     *ringqueue.NewRingQueue
 
 	subscriberLock sync.RWMutex
 	lastUnusedId   int64
@@ -17,7 +18,7 @@ type messageHub struct {
 func NewMessageHub() *messageHub {
 	h := &messageHub{
 		msgRecLock: sync.Mutex{},
-		msgRec:     NewMessageRecorder(MAX_MESSAGE_HISTORY),
+		msgRec:     ringqueue.NewMessageRecorder(MAX_MESSAGE_HISTORY),
 
 		subscriberLock: sync.RWMutex{},
 		lastUnusedId:   0,

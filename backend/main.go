@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/ipid/chatroom-backend/def"
+	"github.com/ipid/chatroom-backend/util"
 	"log"
 	"net/http"
 	"regexp"
@@ -69,7 +71,7 @@ func clientRequestHandler(conn *websocket.Conn, chanClientRequest chan<- *Client
 }
 
 func handleClientRequest(req *ClientRequest, myId int64) *ServerResponse {
-	msg := &Message{
+	msg := &def.Message{
 		Id:          -1,
 		Sender:      req.MsgRequest.Sender,
 		SenderId:    myId,
@@ -84,7 +86,7 @@ func handleClientRequest(req *ClientRequest, myId int64) *ServerResponse {
 
 		if 1 <= dNum && dNum <= 99 && 1 <= dMax && dMax <= 99 {
 			msg.Dice = &MessageDataDice{
-				Dices: getDices(dNum, dMax),
+				Dices: util.getDices(dNum, dMax),
 			}
 		}
 	}

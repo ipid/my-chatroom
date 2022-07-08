@@ -1,6 +1,9 @@
-package defs
+package def
 
+// UserId 用户 ID（从 0 开始）
 type UserId int64
+
+// MsgId 消息 ID（从 0 开始）
 type MsgId int64
 
 // User 聊天室内的用户
@@ -14,7 +17,7 @@ type User struct {
 
 // Dice 骰子消息中的一个骰子
 type Dice struct {
-	// 表示该骰子的取值范围是 [1, max]
+	// 表示该骰子的取值范围是 [1, Max]
 	Max int `json:"max"`
 
 	// 表示该骰子投出来的值
@@ -40,4 +43,13 @@ type Message struct {
 
 	// 骰子消息
 	Dices []Dice `json:"dices,omitempty"`
+}
+
+// DiceRequest 表示投一到多个某种骰子的请求，如 1d99、3d6 等。
+type DiceRequest struct {
+	// 骰子个数
+	Num int
+
+	// 骰子的最大值。表示该骰子的取值范围是 [1, Max]
+	Max int
 }

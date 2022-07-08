@@ -1,4 +1,4 @@
-package defs
+package def
 
 type LoginToken string
 
@@ -61,4 +61,7 @@ type RenameFailReason string
 const (
 	// CONFLICT 名字与他人重复，造成冲突
 	CONFLICT RenameFailReason = "conflict"
+
+	// TOO_LONG 超过名字长度限制
+	TOO_LONG RenameFailReason = "too-long"
 )

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/ipid/chatroom-backend/def"
-	"github.com/ipid/chatroom-backend/ringqueue"
+	"chatroom-backend/def"
+	"chatroom-backend/ringqueue"
 	"sync"
 )
 

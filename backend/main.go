@@ -1,13 +1,12 @@
 package main
 
 import (
+	"chatroom-backend/def"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/ipid/chatroom-backend/def"
-	"github.com/ipid/chatroom-backend/util"
 	"log"
 	"net/http"
 	"regexp"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ipid/chatroom-backend/def"
+	"chatroom-backend/def"
 	"math/rand"
 	"time"
 )
